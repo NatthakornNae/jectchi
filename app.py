@@ -16,21 +16,22 @@ def analyze_urine_color(image_path):
     avg_color_per_row = np.average(img, axis=0)
     avg_color = np.average(avg_color_per_row, axis=0)
     b, g, r = avg_color
-    hsv_img = cv2.cvtColor(np.uint8([[avg_color]]), cv2.COLOR_BGR2HSV)[0][0]
-    h, s, v = hsv_img
 
-    if v > 220 and s < 30:
+    r, g, b = int(r), int(g), int(b)
+
+    if r > 230 and g > 230 and b > 230:
         return "ใส (อาจดื่มน้ำมาก)"
-    elif 40 < h < 70 and s > 100:
+    elif r > 200 and g > 200 and b < 100:
         return "เหลืองอ่อน (ปกติ)"
-    elif 20 < h < 40:
+    elif r > 180 and g > 150 and b < 80:
         return "เหลืองเข้ม (อาจขาดน้ำ)"
-    elif 10 < h < 20:
+    elif r > 160 and g > 100 and b < 60:
         return "ส้ม (ขาดน้ำมาก)"
-    elif h < 10:
+    elif r > 100 and g < 80 and b < 50:
         return "น้ำตาล (ควรพบแพทย์)"
     else:
-        return "ไม่สามารถประเมินได้"
+        return f"ไม่สามารถประเมินได้ (R:{r}, G:{g}, B:{b})"
+
 
 @app.route('/')
 def index():
